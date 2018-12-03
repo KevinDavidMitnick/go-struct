@@ -3,7 +3,7 @@ package arraylist
 import (
 	"errors"
 	"fmt"
-	"github.com/go-struct/list"
+	"github.com/KevinDavidMitnick/go-struct/list"
 )
 
 type ArrayList struct {

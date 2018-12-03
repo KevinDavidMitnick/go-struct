@@ -2,7 +2,7 @@ package circlearrayqueue
 
 import (
 	"errors"
-	"github.com/go-struct/queue"
+	"github.com/KevinDavidMitnick/go-struct/queue"
 )
 
 type CircleArrayQueue struct {

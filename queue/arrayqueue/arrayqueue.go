@@ -2,8 +2,8 @@ package arrayqueue
 
 import (
 	"errors"
-	"github.com/go-struct/arraylist"
-	"github.com/go-struct/queue"
+	"github.com/KevinDavidMitnick/go-struct/list/arraylist"
+	"github.com/KevinDavidMitnick/go-struct/queue"
 )
 
 type ArrayQueue struct {

@@ -2,7 +2,7 @@ package stack
 
 import (
 	"errors"
-	"github.com/go-struct/arraylist"
+	"github.com/KevinDavidMitnick/go-struct/list/arraylist"
 )
 
 type ArrayStack struct {
