@@ -1,15 +1,16 @@
-package stack
+package arraystack
 
 import (
 	"errors"
 	"github.com/KevinDavidMitnick/go-struct/list/arraylist"
+	"github.com/KevinDavidMitnick/go-struct/stack"
 )
 
 type ArrayStack struct {
 	arraylist.ArrayList
 }
 
-func InitArrayStack(size int) (Stack, error) {
+func InitArrayStack(size int) (stack.Stack, error) {
 	if size < 1 {
 		return nil, errors.New("list size less than 1")
 	}

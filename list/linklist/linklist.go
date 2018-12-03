@@ -13,34 +13,34 @@ type Node struct {
 
 type LinkList struct {
 	Node
-	len int
+	Len int
 }
 
 func InitLinkList() (list.List, error) {
 	var linkList LinkList
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
-	linkList.len = 0
+	linkList.Len = 0
 	return &linkList, nil
 }
 
 func (l *LinkList) IsEmpty() bool {
-	if l.len == 0 {
+	if l.Len == 0 {
 		return true
 	}
 	return false
 }
 
 func (l *LinkList) Length() int {
-	return l.len
+	return l.Len
 }
 
 func (l *LinkList) Size() int {
-	return l.len
+	return l.Len
 }
 
 func (l *LinkList) Equal(ol list.List) bool {
-	if l.len != ol.Length() {
+	if l.Len != ol.Length() {
 		return false
 	}
 	p := l.Next
@@ -63,7 +63,7 @@ func (l *LinkList) GetElem(i int) (interface{}, error) {
 	if l.IsEmpty() {
 		return nil, errors.New("list is empty.")
 	}
-	if i < 0 || i >= l.len {
+	if i < 0 || i >= l.Len {
 		return nil, errors.New("index i not valid.")
 	}
 	p := l.Next.Next
@@ -95,7 +95,7 @@ func (l *LinkList) LocateElem(e interface{}) int {
 }
 
 func (l *LinkList) Insert(i int, e interface{}) error {
-	if i < 0 || i > l.len {
+	if i < 0 || i > l.Len {
 		return errors.New("index i not valid.")
 	}
 	p := l.Next
@@ -105,7 +105,7 @@ func (l *LinkList) Insert(i int, e interface{}) error {
 		j += 1
 	}
 	p.Next = &Node{Item: e, Next: p.Next}
-	l.len += 1
+	l.Len += 1
 	return nil
 }
 
@@ -113,7 +113,7 @@ func (l *LinkList) Delete(i int) (interface{}, error) {
 	if l.IsEmpty() {
 		return nil, errors.New("list is empty.")
 	}
-	if i < 0 || i >= l.len {
+	if i < 0 || i >= l.Len {
 		return nil, errors.New("index i not valid.")
 	}
 	p := l.Next
@@ -124,7 +124,7 @@ func (l *LinkList) Delete(i int) (interface{}, error) {
 	}
 	item := p.Next.Item
 	p.Next = p.Next.Next
-	l.len -= 1
+	l.Len -= 1
 	return item, nil
 }
 
@@ -132,10 +132,10 @@ func (l *LinkList) Clone() list.List {
 	var linkList LinkList
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
-	linkList.len = 0
+	linkList.Len = 0
 
 	p := l.Next.Next
-	for i := 0; i < l.len; i++ {
+	for i := 0; i < l.Len; i++ {
 		linkList.Insert(linkList.Length(), p.Item)
 		p = p.Next
 	}
@@ -149,7 +149,7 @@ func (l *LinkList) Diff(list list.List) list.List {
 	ol := l.Clone()
 	al := list.(*LinkList)
 	p := al.Next.Next
-	for i := 0; p != nil && i < al.len; i++ {
+	for i := 0; p != nil && i < al.Len; i++ {
 		if j := ol.LocateElem(p.Item); j >= 0 {
 			ol.Delete(j)
 		}
@@ -171,7 +171,7 @@ func (l *LinkList) Union(list list.List) list.List {
 	al := list.(*LinkList)
 
 	p := al.Next.Next
-	for i := 0; p != nil && i < al.len; i++ {
+	for i := 0; p != nil && i < al.Len; i++ {
 		if ol.LocateElem(p.Item) < 0 {
 			ol.Insert(ol.Length(), p.Item)
 		}
@@ -183,7 +183,7 @@ func (l *LinkList) Union(list list.List) list.List {
 func (l *LinkList) ClearList() {
 	l.Item = nil
 	l.Next = nil
-	l.len = 0
+	l.Len = 0
 }
 
 func (l *LinkList) Display() {
