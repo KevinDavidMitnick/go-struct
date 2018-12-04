@@ -1,4 +1,4 @@
-package linklist
+package circlelinklist
 
 import (
 	"errors"
@@ -11,41 +11,45 @@ type Node struct {
 	Next *Node
 }
 
-type LinkList struct {
+type CircleLinkList struct {
 	Node
-	Len int
+	Len  int
+	tail *Node
 }
 
-func InitLinkList() (list.List, error) {
-	var linkList LinkList
+func InitCircleLinkList() (list.List, error) {
+	var linkList CircleLinkList
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
+	linkList.Next.Next = linkList.Next
+	linkList.tail = linkList.Next
 	linkList.Len = 0
 	return &linkList, nil
 }
 
-func (l *LinkList) IsEmpty() bool {
+func (l *CircleLinkList) IsEmpty() bool {
 	if l.Len == 0 {
 		return true
 	}
 	return false
 }
 
-func (l *LinkList) Length() int {
+func (l *CircleLinkList) Length() int {
 	return l.Len
 }
 
-func (l *LinkList) Size() int {
+func (l *CircleLinkList) Size() int {
 	return l.Len
 }
 
-func (l *LinkList) Equal(ol list.List) bool {
+func (l *CircleLinkList) Equal(ol list.List) bool {
 	if l.Len != ol.Length() {
 		return false
 	}
-	p := l.Next
-	q := ol.(*LinkList).Next
-	for p != nil && q != nil {
+	p := l.Next.Next
+	o := ol.(*CircleLinkList)
+	q := o.Next.Next
+	for p != l.Next && q != o.Next {
 		if p.Item != q.Item {
 			return false
 		}
@@ -55,11 +59,11 @@ func (l *LinkList) Equal(ol list.List) bool {
 	return true
 }
 
-func (l *LinkList) IsFull() bool {
+func (l *CircleLinkList) IsFull() bool {
 	return false
 }
 
-func (l *LinkList) GetElem(i int) (interface{}, error) {
+func (l *CircleLinkList) GetElem(i int) (interface{}, error) {
 	if l.IsEmpty() {
 		return nil, errors.New("list is empty.")
 	}
@@ -68,7 +72,7 @@ func (l *LinkList) GetElem(i int) (interface{}, error) {
 	}
 	p := l.Next.Next
 	j := 0
-	for p != nil && j < i {
+	for p != l.Next && j < i {
 		p = p.Next
 		j += 1
 	}
@@ -78,13 +82,13 @@ func (l *LinkList) GetElem(i int) (interface{}, error) {
 	return nil, errors.New("not found,unknown error.")
 }
 
-func (l *LinkList) LocateElem(e interface{}) int {
+func (l *CircleLinkList) LocateElem(e interface{}) int {
 	if l.IsEmpty() {
 		return -1
 	}
 	p := l.Next.Next
 	j := 0
-	for p != nil {
+	for p != l.Next {
 		if p.Item == e {
 			return j
 		}
@@ -94,13 +98,20 @@ func (l *LinkList) LocateElem(e interface{}) int {
 	return -1
 }
 
-func (l *LinkList) Insert(i int, e interface{}) error {
+func (l *CircleLinkList) Insert(i int, e interface{}) error {
 	if i < 0 || i > l.Len {
 		return errors.New("index i not valid.")
 	}
+	if i == l.Len {
+		t := &Node{Item: e, Next: l.Next}
+		l.tail.Next = t
+		l.tail = t
+		l.Len += 1
+		return nil
+	}
 	p := l.Next
 	j := 0
-	for p.Next != nil && j < i {
+	for j < i {
 		p = p.Next
 		j += 1
 	}
@@ -109,7 +120,7 @@ func (l *LinkList) Insert(i int, e interface{}) error {
 	return nil
 }
 
-func (l *LinkList) Delete(i int) (interface{}, error) {
+func (l *CircleLinkList) Delete(i int) (interface{}, error) {
 	if l.IsEmpty() {
 		return nil, errors.New("list is empty.")
 	}
@@ -118,20 +129,25 @@ func (l *LinkList) Delete(i int) (interface{}, error) {
 	}
 	p := l.Next
 	j := 0
-	for p.Next != nil && j < i {
+	for j < i {
 		p = p.Next
 		j += 1
 	}
 	item := p.Next.Item
 	p.Next = p.Next.Next
+	if i == l.Len-1 {
+		l.tail = p
+	}
 	l.Len -= 1
 	return item, nil
 }
 
-func (l *LinkList) Clone() list.List {
-	var linkList LinkList
+func (l *CircleLinkList) Clone() list.List {
+	var linkList CircleLinkList
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
+	linkList.Next.Next = linkList.Next
+	linkList.tail = linkList.Next
 	linkList.Len = 0
 
 	p := l.Next.Next
@@ -142,14 +158,14 @@ func (l *LinkList) Clone() list.List {
 	return &linkList
 }
 
-func (l *LinkList) Diff(list list.List) list.List {
+func (l *CircleLinkList) Diff(list list.List) list.List {
 	if list == nil || list.IsEmpty() || l.IsEmpty() {
 		return l.Clone()
 	}
 	ol := l.Clone()
-	al := list.(*LinkList)
+	al := list.(*CircleLinkList)
 	p := al.Next.Next
-	for i := 0; p != nil && i < al.Len; i++ {
+	for i := 0; p != al.Next && i < al.Len; i++ {
 		if j := ol.LocateElem(p.Item); j >= 0 {
 			ol.Delete(j)
 		}
@@ -159,7 +175,7 @@ func (l *LinkList) Diff(list list.List) list.List {
 
 }
 
-func (l *LinkList) Union(list list.List) list.List {
+func (l *CircleLinkList) Union(list list.List) list.List {
 	if list == nil || list.IsEmpty() {
 		return l.Clone()
 	}
@@ -168,10 +184,10 @@ func (l *LinkList) Union(list list.List) list.List {
 	}
 
 	ol := l.Clone()
-	al := list.(*LinkList)
+	al := list.(*CircleLinkList)
 
 	p := al.Next.Next
-	for i := 0; p != nil && i < al.Len; i++ {
+	for i := 0; p != al.Next && i < al.Len; i++ {
 		if ol.LocateElem(p.Item) < 0 {
 			ol.Insert(ol.Length(), p.Item)
 		}
@@ -180,15 +196,16 @@ func (l *LinkList) Union(list list.List) list.List {
 	return ol
 }
 
-func (l *LinkList) ClearList() {
+func (l *CircleLinkList) ClearList() {
 	l.Item = nil
-	l.Next = nil
+	l.Next.Next = l.Next
+	l.tail = l.Next
 	l.Len = 0
 }
 
-func (l *LinkList) Display() {
+func (l *CircleLinkList) Display() {
 	p := l.Next.Next
-	for ; p != nil; p = p.Next {
+	for ; p != l.Next; p = p.Next {
 		fmt.Print(" ", p.Item)
 	}
 	fmt.Println()
