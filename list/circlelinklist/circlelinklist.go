@@ -14,7 +14,7 @@ type Node struct {
 type CircleLinkList struct {
 	Node
 	Len  int
-	tail *Node
+	Tail *Node
 }
 
 func InitCircleLinkList() (list.List, error) {
@@ -22,7 +22,7 @@ func InitCircleLinkList() (list.List, error) {
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
 	linkList.Next.Next = linkList.Next
-	linkList.tail = linkList.Next
+	linkList.Tail = linkList.Next
 	linkList.Len = 0
 	return &linkList, nil
 }
@@ -104,8 +104,8 @@ func (l *CircleLinkList) Insert(i int, e interface{}) error {
 	}
 	if i == l.Len {
 		t := &Node{Item: e, Next: l.Next}
-		l.tail.Next = t
-		l.tail = t
+		l.Tail.Next = t
+		l.Tail = t
 		l.Len += 1
 		return nil
 	}
@@ -136,7 +136,7 @@ func (l *CircleLinkList) Delete(i int) (interface{}, error) {
 	item := p.Next.Item
 	p.Next = p.Next.Next
 	if i == l.Len-1 {
-		l.tail = p
+		l.Tail = p
 	}
 	l.Len -= 1
 	return item, nil
@@ -147,7 +147,7 @@ func (l *CircleLinkList) Clone() list.List {
 	linkList.Item = nil
 	linkList.Next = &Node{Item: nil, Next: nil}
 	linkList.Next.Next = linkList.Next
-	linkList.tail = linkList.Next
+	linkList.Tail = linkList.Next
 	linkList.Len = 0
 
 	p := l.Next.Next
@@ -199,7 +199,7 @@ func (l *CircleLinkList) Union(list list.List) list.List {
 func (l *CircleLinkList) ClearList() {
 	l.Item = nil
 	l.Next.Next = l.Next
-	l.tail = l.Next
+	l.Tail = l.Next
 	l.Len = 0
 }
 
