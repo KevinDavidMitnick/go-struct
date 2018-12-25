@@ -127,6 +127,7 @@ func (l *CircleLinkList) Delete(i int) (interface{}, error) {
 	if i < 0 || i >= l.Len {
 		return nil, errors.New("index i not valid.")
 	}
+
 	p := l.Next
 	j := 0
 	for j < i {
