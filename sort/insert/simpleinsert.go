@@ -5,24 +5,12 @@ func SimpleInsert(l []int) []int {
 
 	for i := 1; i < length; i++ {
 		elem := l[i]
-		index := locale(l, elem)
-		for j := i; j > index; j-- {
+		var j = i
+		for ; j > 0 && elem < l[j-1]; j-- {
 			l[j] = l[j-1]
 		}
-		l[index] = elem
+		l[j] = elem
 	}
 
 	return l
-}
-
-func locale(l []int, ele int) int {
-	length := len(l)
-	index := length - 1
-	for i := 0; i < length; i++ {
-		if ele <= l[i] {
-			index = i
-			break
-		}
-	}
-	return index
 }
