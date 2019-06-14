@@ -1,37 +1,37 @@
 package swap
 
-func BubbleBigSort(l []int) []int {
-	length := len(l)
-	for i := 1; i < length; i++ {
-		flag := true
-		for j := 0; j < length-i; j++ {
-			if l[j] > l[j+1] {
-				l[j], l[j+1] = l[j+1], l[j]
-				flag = false
+//BubbleSmallSort , small bubble sort
+func BubbleSmallSort(arr []int) []int {
+	length := len(arr)
+	for s := 1; s < length; s++ {
+		flag := false
+		for i := 0; i < length-s; i++ {
+			if arr[i] > arr[i+1] {
+				arr[i+1], arr[i] = arr[i], arr[i+1]
+				flag = true
 			}
 		}
-		if flag == true {
+		if !flag {
 			break
 		}
 	}
-
-	return l
+	return arr
 }
 
-func BubbleSmallSort(l []int) []int {
-	length := len(l)
-	for i := 1; i < length; i++ {
-		flag := true
-		for j := length - 1; j >= i; j-- {
-			if l[j] < l[j-1] {
-				l[j], l[j-1] = l[j-1], l[j]
-				flag = false
+//BubbleBigSort , big bubble sort
+func BubbleBigSort(arr []int) []int {
+	length := len(arr)
+	for s := 1; s < length; s++ {
+		flag := false
+		for i := 0; i < length-s; i++ {
+			if arr[i] < arr[i+1] {
+				arr[i+1], arr[i] = arr[i], arr[i+1]
+				flag = true
 			}
 		}
-		if flag == true {
+		if !flag {
 			break
 		}
 	}
-
-	return l
+	return arr
 }

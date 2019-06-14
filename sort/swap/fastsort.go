@@ -1,21 +1,35 @@
 package swap
 
-func FastSort(l []int) []int {
-	length := len(l)
-	if length <= 1 {
-		return l
+// FastSort
+func FastSort(arr []int) {
+	separateSort(arr, 0, len(arr)-1)
+}
+
+func separateSort(arr []int, start, end int) {
+	if start >= end {
+		return
 	}
-	base := l[0]
-	i, j := 0, length-1
-	for i < j {
-		for ; l[j] > base && j > i; j-- {
+	i := partition(arr, start, end)
+	separateSort(arr, start, i-1)
+	separateSort(arr, i+1, end)
+}
+
+func partition(arr []int, start, end int) int {
+	// 选取最后一位当对比数字
+	pivot := arr[end]
+
+	var i = start
+	for j := start; j < end; j++ {
+		if arr[j] < pivot {
+			if !(i == j) {
+				// 交换位置
+				arr[i], arr[j] = arr[j], arr[i]
+			}
+			i++
 		}
-		for ; l[i] <= base && i < j; i++ {
-		}
-		l[i], l[j] = l[j], l[i]
 	}
-	l[i], l[0] = l[0], l[i]
-	FastSort(l[0:i])
-	FastSort(l[i+1:])
-	return l
+
+	arr[i], arr[end] = arr[end], arr[i]
+
+	return i
 }
