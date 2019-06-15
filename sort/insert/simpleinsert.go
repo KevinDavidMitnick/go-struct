@@ -1,16 +1,21 @@
 package insert
 
-func SimpleInsert(l []int) []int {
-	length := len(l)
-
-	for i := 1; i < length; i++ {
-		elem := l[i]
-		var j = i
-		for ; j > 0 && elem < l[j-1]; j-- {
-			l[j] = l[j-1]
-		}
-		l[j] = elem
+// SimpleInsert ,simple insert func.
+func SimpleInsert(arr []int) []int {
+	length := len(arr)
+	if length <= 1 {
+		return arr
 	}
 
-	return l
+	// select one from unsort arr,insert to the right positon,from right.
+	for j := 1; j < length; j++ {
+		i := j - 1
+		hold := arr[j]
+		for i >= 0 && arr[j] < arr[i] {
+			arr[i+1] = arr[i]
+			i--
+		}
+		arr[i+1] = hold
+	}
+	return arr
 }
