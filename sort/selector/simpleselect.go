@@ -1,16 +1,18 @@
 package selector
 
-func SimpleSelect(l []int) []int {
-	length := len(l)
+func SimpleSelect(arr []int) []int {
+	length := len(arr)
+	if length <= 1 {
+		return arr
+	}
 	for i := 0; i < length; i++ {
 		min := i
 		for j := i; j < length; j++ {
-			if l[j] < l[min] {
+			if arr[j] < arr[min] {
 				min = j
 			}
 		}
-		l[i], l[min] = l[min], l[i]
+		arr[i], arr[min] = arr[min], arr[i]
 	}
-
-	return l
+	return arr
 }
