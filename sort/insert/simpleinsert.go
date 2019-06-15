@@ -9,13 +9,13 @@ func SimpleInsert(arr []int) []int {
 
 	// select one from unsort arr,insert to the right positon,from right.
 	for j := 1; j < length; j++ {
-		i := j - 1
+		i := j
 		hold := arr[j]
-		for i >= 0 && hold < arr[i] {
-			arr[i+1] = arr[i]
+		for i > 0 && hold < arr[i-1] {
+			arr[i] = arr[i-1]
 			i--
 		}
-		arr[i+1] = hold
+		arr[i] = hold
 	}
 	return arr
 }
