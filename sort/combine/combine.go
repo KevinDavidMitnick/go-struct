@@ -1,29 +1,38 @@
 package combine
 
-func Combine(l []int) []int {
-	length := len(l)
+// Combine func
+func Combine(arr []int) []int {
+	length := len(arr)
 	if length <= 1 {
-		return l
+		return arr
 	}
-
+	// find mid position
 	mid := length / 2
-	left := Combine(l[0:mid])
-	right := Combine(l[mid:])
-	return mergeSort(left, right)
-}
+	// children left combine
+	left := Combine(arr[0:mid])
 
-func mergeSort(left, right []int) (result []int) {
-	l, r := 0, 0
-	for l < len(left) && r < len(right) {
-		if left[l] < right[r] {
-			result = append(result, left[l])
-			l++
+	// children right combine
+	right := Combine(arr[mid:])
+
+	// join left join and right child
+	var all []int
+	i, j := 0, 0
+
+	for i < len(left) && j < len(right) {
+		if left[i] < right[j] {
+			all = append(all, left[i])
+			i++
 		} else {
-			result = append(result, right[r])
-			r++
+			all = append(all, right[j])
+			j++
 		}
 	}
-	result = append(result, left[l:]...)
-	result = append(result, right[r:]...)
-	return
+	if i == len(left) && j < len(right) {
+		all = append(all, right[j:]...)
+	}
+	if i < len(left) && j == len(right) {
+		all = append(all, left[i:]...)
+	}
+
+	return all
 }
