@@ -11,7 +11,7 @@ func SimpleInsert(arr []int) []int {
 	for j := 1; j < length; j++ {
 		i := j - 1
 		hold := arr[j]
-		for i >= 0 && arr[j] < arr[i] {
+		for i >= 0 && hold < arr[i] {
 			arr[i+1] = arr[i]
 			i--
 		}
