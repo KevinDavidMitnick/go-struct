@@ -10,10 +10,10 @@ func InsertSearch(arr []int, element int, low int, high int) int {
 		return mid
 	}
 	if element < arr[mid] {
-		return BinarySearch(arr, element, low, high-mid)
+		return Search1(arr, element, low, mid-1)
 	}
 	if element > arr[mid] {
-		return BinarySearch(arr, element, low+mid, high)
+		return Search1(arr, element, mid+1, high)
 	}
 	return -1
 }
